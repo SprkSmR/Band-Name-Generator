@@ -16,6 +16,13 @@ var generatedName = "";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  let randomAdj = (Math.floor(Math.random() * adj.length)) + 1;
+  let randomNoun = (Math.floor(Math.random() * noun.length)) + 1;
+  generatedName = adj[randomAdj] + " " + noun[randomNoun];
+  next();
+});
+
 app.get("/", (req, res) => {
   generatedName = "";
   res.render("index.ejs");
@@ -23,9 +30,6 @@ app.get("/", (req, res) => {
 
 app.post("/submit", (req, res) => {
   //TODO: PUT THE RANDOM NAME GENERATION IN A MIDDLEWARE
-  let randomAdj = (Math.floor(Math.random()) * adj.length) + 1;
-  let randomNoun = (Math.floor(Math.random()) * noun.length) + 1;
-  generatedName = adj[randomAdj] + " " + noun[randomNoun];
   res.render("index.ejs", {viewName: generatedName});
 });
 
