@@ -9,12 +9,11 @@ const port = 3000;
 //Hint 2: The header and footer are partials.
 //Hint 3: Add the CSS link in header.ejs
 
-//Step 4 - Add a dynamic year to the footer.
-//Hint: Google to find out how to get the current year using JS.
-
 var generatedName = "";
+var currentDate = new Date();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.use((req, res, next) => {
   let randomAdj = (Math.floor(Math.random() * adj.length)) + 1;
@@ -25,12 +24,12 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   generatedName = "";
-  res.render("index.ejs");
+  res.render("index.ejs", {currentYear: currentDate.getFullYear()});
 });
 
 app.post("/submit", (req, res) => {
-  //TODO: PUT THE RANDOM NAME GENERATION IN A MIDDLEWARE
-  res.render("index.ejs", {viewName: generatedName});
+  res.render("index.ejs", {viewName: generatedName, 
+                           currentYear: currentDate.getFullYear()});
 });
 
 app.listen(port, () => {
